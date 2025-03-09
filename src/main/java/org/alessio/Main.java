@@ -9,7 +9,8 @@ public class Main {
 
 	public static void main(String[] args) {
 		int numDisks = getInput();
-		BackgroundThread statusThread = new BackgroundThread();
+		// Set to true to enable status updates, in case of disabled printRods() in TowerOfHanoi
+		BackgroundThread statusThread = new BackgroundThread(false);
 		TowerOfHanoi towerOfHanoi = new TowerOfHanoi(numDisks);
 		startTime = Instant.now();
 		towerOfHanoi.solve();
