@@ -17,8 +17,10 @@ public class BackgroundThread {
 		}, 1000, updateInterval);
 	});
 
-	BackgroundThread() {
-		t.start();
+	BackgroundThread(boolean start) {
+		if (start) {
+			t.start();
+		}
 	}
 
 	private void update() {
@@ -31,7 +33,7 @@ public class BackgroundThread {
 
 	private void printStatus(Stack<Integer>[] rods, Duration timeElapsed) {
 
-		System.out.println("Current state of rods: " + rods);
+		System.out.println("Current state of rods: " + rods[0].firstElement() + " " + rods[1].firstElement() + " " + rods[2].firstElement());
 		long days = timeElapsed.toDays();
 		long hours = timeElapsed.toHours() % 24;
 		long minutes = timeElapsed.toMinutes() % 60;

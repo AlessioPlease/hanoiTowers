@@ -6,6 +6,11 @@ public class TowerOfHanoi {
 	private int numDisks;
 	private static Stack<Integer>[] rods;
 
+	/**
+	 * Constructs a TowerOfHanoi object with the specified number of disks.
+	 *
+	 * @param numDisks the number of disks
+	 */
 	public TowerOfHanoi(int numDisks) {
 		this.numDisks = numDisks;
 		rods = new Stack[3];
@@ -17,26 +22,39 @@ public class TowerOfHanoi {
 		}
 	}
 
+	/**
+	 * Starts the Tower of Hanoi puzzle.
+	 */
 	public void solve() {
-		//printRods();
+		printRods();	// Comment for improved performance
 		moveDisks(numDisks, 0, 2, 1);
-		printRods(); // temporary fix to only print the final state
 	}
 
+	/**
+	 * Recursive method to move the specified number of disks from one rod to another.
+	 *
+	 * @param n the number of disks to move
+	 * @param fromRod the rod to move disks from
+	 * @param toRod the rod to move disks to
+	 * @param auxRod the auxiliary rod
+	 */
 	private void moveDisks(int n, int fromRod, int toRod, int auxRod) {
 		if (n == 1) {
 			rods[toRod].push(rods[fromRod].pop());
-			//printRods();
+			printRods();	// Comment for improved performance
 			return;
 		}
 		moveDisks(n - 1, fromRod, auxRod, toRod);
 		rods[toRod].push(rods[fromRod].pop());
-		//printRods();
+		printRods();	// Comment for improved performance
 		moveDisks(n - 1, auxRod, toRod, fromRod);
 	}
 
+	/**
+	 * Prints the current state of the rods to the console.
+	 */
 	private void printRods() {
-		//sleep();
+		sleep();
 		// Clear the terminal
 		System.out.print("\033[H\033[2J");
 		System.out.flush();
@@ -64,6 +82,10 @@ public class TowerOfHanoi {
 		System.out.println();
 	}
 
+	/**
+	 * Pauses the execution for a short period, to allow the user
+	 * to see the current state of the rods and their moves.
+	 */
 	private void sleep() {
 		try {
 			Thread.sleep(10);
