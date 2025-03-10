@@ -9,16 +9,19 @@ public class Main {
 
 	public static void main(String[] args) {
 		int numDisks = getInput();
-		// Set to true to enable status updates, in case of disabled printRods() in TowerOfHanoi
-		BackgroundThread statusThread = new BackgroundThread(false);
-		TowerOfHanoi towerOfHanoi = new TowerOfHanoi(numDisks);
+		boolean recursiveMode = true;
+		boolean performanceMode = true;
+
+		TowerOfHanoi towerOfHanoi = new TowerOfHanoi(numDisks, recursiveMode, !performanceMode);
+		BackgroundThread statusThread = new BackgroundThread(towerOfHanoi, performanceMode);
 		startTime = Instant.now();
 		towerOfHanoi.solve();
 
 		Instant finishTime = Instant.now();
 		statusThread.shutdown();
 
-		printTimeElapsed(startTime, finishTime);
+		Duration duration = Duration.between(startTime, finishTime);
+		printTime(duration, "Time elapsed:");
 	}
 
 	private static int getInput() {
@@ -29,15 +32,14 @@ public class Main {
 		return numDisks;
 	}
 
-	private static void printTimeElapsed(Instant startTime, Instant endTime) {
-		Duration duration = Duration.between(startTime, endTime);
-		String days = duration.toDays() > 0 ? (duration.toDays() + (duration.toDays() > 1 ? " days, " : " day, ")) : "";
-		String hours = duration.toHours() % 24 > 0 ? (duration.toHours() + (duration.toHours() > 1 ? " hours, " : " hour, ")) : "";
-		String minutes = duration.toMinutes() % 60 > 0 ? (duration.toMinutes() + (duration.toMinutes() > 1 ? " minutes, " : " minute, ")) : "";
-		String seconds = duration.toSeconds() % 60 > 0 ? (duration.toSeconds() + (duration.toSeconds() > 1 ? " seconds, " : " second, ")) : "";
-		String milliseconds = duration.toMillis() % 1000 > 0 ? (duration.toMillis() + (duration.toMillis() > 1 ? " milliseconds" : " millisecond")) : "";
+	public static void printTime(Duration duration, String message) {
+		String days = duration.toDays() > 0 ? (" " + duration.toDays() + (duration.toDays() > 1 ? " days," : " day,")) : "";
+		String hours = duration.toHours() % 24 > 0 ? (" " + duration.toHours() % 24 + (duration.toHours() % 24 > 1 ? " hours," : " hour,")) : "";
+		String minutes = duration.toMinutes() % 60 > 0 ? (" " + duration.toMinutes() % 60 + (duration.toMinutes() % 60 > 1 ? " minutes," : " minute,")) : "";
+		String seconds = duration.toSeconds() % 60 > 0 ? (" " + duration.toSeconds() % 60 + (duration.toSeconds() % 60 > 1 ? " seconds," : " second,")) : "";
+		String milliseconds = duration.toMillis() % 1000 > 0 ? (" " + duration.toMillis() % 1000 + (duration.toMillis() % 1000 > 1 ? " milliseconds" : " millisecond")) : "";
 
-		System.out.println("Execution time: " + days + " " + hours + " " + minutes + " " + seconds + " " + milliseconds);
+		System.out.println(message + days + hours + minutes + seconds + milliseconds);
 	}
 
 	public static Instant getStartTime() {
