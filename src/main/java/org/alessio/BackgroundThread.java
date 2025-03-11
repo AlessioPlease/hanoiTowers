@@ -32,15 +32,14 @@ public class BackgroundThread {
 		Instant now = Instant.now();
 		Duration duration = Duration.between(start, now);
 
-		printStatus(towerOfHanoi.getRods(), duration);
+		printStatus(towerOfHanoi.getRods(), towerOfHanoi.getNumDisks(), towerOfHanoi.getMoves(), duration);
 	}
 
-	private void printStatus(Stack<Integer>[] rods, Duration duration) {
-
+	private void printStatus(Stack<Integer>[] rods, int numDisks, long currentMoves, Duration duration) {
 		// Print current moves and total moves until completion
-		long moves = (long) Math.pow(2, towerOfHanoi.getNumDisks()) - 1;
-		double progressPercentage = (double) towerOfHanoi.getMoves() / moves * 100;
-		System.out.println("\n" + towerOfHanoi.getMoves() + " moves of " + moves + " (" + String.format("%.4f", progressPercentage) + "%)");
+		long totalMoves = (long) Math.pow(2, numDisks) - 1;
+		double progressPercentage = (double) currentMoves / totalMoves * 100;
+		System.out.println("\n" + currentMoves + " moves of " + totalMoves + " (" + String.format("%.4f", progressPercentage) + "%)");
 
 		// Print current state of rods
 		if (rods != null && !rods[0].isEmpty() && !rods[1].isEmpty() && !rods[2].isEmpty()) {
