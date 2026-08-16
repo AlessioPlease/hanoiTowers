@@ -7,6 +7,12 @@ import java.util.Scanner;
 public class Main {
 	static Instant startTime;
 
+	/*
+	TODO:
+	pause and resume the execution (saving the state to a file)
+	change update intervals of the timer
+	print the full current state of the disks
+	 */
 	public static void main(String[] args) {
 		int numDisks = getInput();
 		boolean recursiveMode = true;
