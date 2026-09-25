@@ -2,10 +2,13 @@ package org.alessio;
 
 import java.util.*;
 import java.time.*;
+import java.util.function.*;
 
 public class BackgroundThread {
 
-	private final TowerOfHanoi towerOfHanoi;
+	private final Supplier<Stack<Integer>[]> rods;
+	private final IntSupplier numDisks;
+	private final LongSupplier moves;
 	private final boolean startThread;
 	private Timer statusTimer;
 	private final int updateInterval = 10000;
@@ -20,7 +23,17 @@ public class BackgroundThread {
 	});
 
 	BackgroundThread(TowerOfHanoi towerOfHanoi, boolean startThread) {
-		this.towerOfHanoi = towerOfHanoi;
+		this(towerOfHanoi::getRods, towerOfHanoi::getNumDisks, towerOfHanoi::getMoves, startThread);
+	}
+
+	BackgroundThread(FastTowerOfHanoi towerOfHanoi, boolean startThread) {
+		this(towerOfHanoi::getRods, towerOfHanoi::getNumDisks, towerOfHanoi::getMoves, startThread);
+	}
+
+	private BackgroundThread(Supplier<Stack<Integer>[]> rods, IntSupplier numDisks, LongSupplier moves, boolean startThread) {
+		this.rods = rods;
+		this.numDisks = numDisks;
+		this.moves = moves;
 		this.startThread = startThread;
 		if (startThread) {
 			t.start();
@@ -32,7 +45,7 @@ public class BackgroundThread {
 		Instant now = Instant.now();
 		Duration duration = Duration.between(start, now);
 
-		printStatus(towerOfHanoi.getRods(), towerOfHanoi.getNumDisks(), towerOfHanoi.getMoves(), duration);
+		printStatus(rods.get(), numDisks.getAsInt(), moves.getAsLong(), duration);
 	}
 
 	private void printStatus(Stack<Integer>[] rods, int numDisks, long currentMoves, Duration duration) {
