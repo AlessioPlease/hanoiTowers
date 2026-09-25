@@ -17,11 +17,20 @@ public class Main {
 		int numDisks = getInput();
 		boolean recursiveMode = true;
 		boolean performanceMode = true;
+		boolean fastMode = true; // use FastTowerOfHanoi instead of TowerOfHanoi
 
-		TowerOfHanoi towerOfHanoi = new TowerOfHanoi(numDisks, recursiveMode, !performanceMode);
-		BackgroundThread statusThread = new BackgroundThread(towerOfHanoi, performanceMode);
-		startTime = Instant.now();
-		towerOfHanoi.solve();
+		BackgroundThread statusThread;
+		if (fastMode) {
+			FastTowerOfHanoi towerOfHanoi = new FastTowerOfHanoi(numDisks, recursiveMode, !performanceMode);
+			statusThread = new BackgroundThread(towerOfHanoi, performanceMode);
+			startTime = Instant.now();
+			towerOfHanoi.solve();
+		} else {
+			TowerOfHanoi towerOfHanoi = new TowerOfHanoi(numDisks, recursiveMode, !performanceMode);
+			statusThread = new BackgroundThread(towerOfHanoi, performanceMode);
+			startTime = Instant.now();
+			towerOfHanoi.solve();
+		}
 
 		Instant finishTime = Instant.now();
 		statusThread.shutdown();
